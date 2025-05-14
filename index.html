@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vertex Auth</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f9fb; }
+    .auth-box { max-width: 350px; margin: 60px auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px #0001; }
+    input, button { width: 100%; margin: 0.5rem 0; padding: 0.6rem; border-radius: 5px; border: 1px solid #ccc; }
+    .msg { color: red; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <div class="auth-box">
+    <h2>Vertex Auth</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
+    <div class="msg" id="authMsg"></div>
+  </div>
+  <script>
+    // --- Vertex Auth Logic ---
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('vertexAuthUsers') || '{}');
+    }
+    function setUsers(users) {
+      localStorage.setItem('vertexAuthUsers', JSON.stringify(users));
+    }
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const users = getUsers();
+      if (users[username] && users[username].password === password) {
+        localStorage.setItem('vertexAuthCurrentUser', username);
+        window.location.href = "notes.html"; // Redirect to your main app
+      } else {
+        document.getElementById('authMsg').textContent = "Invalid username or password.";
+      }
+    }
+    function register() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if (!username || !password) {
+        document.getElementById('authMsg').textContent = "Please enter a username and password.";
+        return;
+      }
+      const users = getUsers();
+      if (users[username]) {
+        document.getElementById('authMsg').textContent = "Username already exists.";
+        return;
+      }
+      users[username] = { password: password };
+      setUsers(users);
+      document.getElementById('authMsg').textContent = "Registration successful! Please log in.";
+    }
+  </script>
+</body>
+</html>
