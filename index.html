@@ -25,7 +25,10 @@
       <h3>Password Manager</h3>
       <input type="text" id="siteName" placeholder="Website/Service Name">
       <input type="text" id="siteUsername" placeholder="Username/Email">
-      <input type="password" id="sitePassword" placeholder="Password">
+      <div style="position: relative;">
+        <input type="password" id="sitePassword" placeholder="Password">
+        <button type="button" id="togglePassword" style="position: absolute; right: 0; top: 0; height: 100%;">Show</button>
+      </div>
       <button onclick="addPassword()">Add Password</button>
       <div class="password-list" id="passwordList"></div>
     </div>
@@ -124,6 +127,20 @@
       savePasswords(passwords);
       loadPasswords();
     }
+
+    // Password visibility toggle
+    const passwordField = document.getElementById('sitePassword');
+    const toggleButton = document.getElementById('togglePassword');
+
+    toggleButton.addEventListener('click', () => {
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.textContent = 'Hide';
+      } else {
+        passwordField.type = 'password';
+        toggleButton.textContent = 'Show';
+      }
+    });
   </script>
 </body>
 </html>
